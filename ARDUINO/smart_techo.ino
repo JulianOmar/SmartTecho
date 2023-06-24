@@ -3,10 +3,10 @@ SoftwareSerial BTserial(2, 3); // RX | TX
 
 char c = ' ';
 
-char pul_remoto = '1';        // seañal para cambiar estado ABIERTO <->CERRADO
-char auto_remoto = '2';       // cambiar estado a AUTOMATICO
-char manual_remoto = '3';     // cambiar estado a MANUAL
-char sensor_luz_remoto = '4'; // solicitar valores del SENSOR_LUZ
+#define pul_remoto 1        // seañal para cambiar estado ABIERTO <->CERRADO
+#define auto_remoto 2       // cambiar estado a AUTOMATICO
+#define manual_remoto 3     // cambiar estado a MANUAL
+#define sensor_luz_remoto 4 // solicitar valores del SENSOR_LUZ
 
 #define SERIAL 9600
 
@@ -64,6 +64,7 @@ bool luz_dia = false;
 bool lluvia = false;
 bool TIMEOUT = false;
 int lluviaSensor = 0;
+int lectura_per = 0;
 
 /*
  * leer monitor serial y sensor bluetooth HC05
@@ -158,7 +159,7 @@ int girar_motor(int pin_motor, int pin_motor_B, int finCarrera)
 void leer_sensores()
 {
   int lectura_luz = analogRead(SENSOR_LUZ);
-  int lectura_per = map(lectura_luz, vol_min, vol_max, f_escala_min, f_escala_max);
+  lectura_per = map(lectura_luz, vol_min, vol_max, f_escala_min, f_escala_max);
   lectura_per > max_luz ? luz_dia = true : luz_dia = false;
 
   lluviaSensor = analogRead(SENSOR_LLUVIA);
@@ -231,7 +232,7 @@ int generar_evento()
 void maquina_estado()
 {
   evento = generar_evento();
-  
+
   switch (modo_actual)
   {
   /*
