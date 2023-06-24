@@ -38,17 +38,17 @@ Proyecto de la materia Sistemas Operativos Avanzados.
 
  
   ## Diagrama de Conexión
-  ![](/diagramas/conexiones_01.jpg)
+  ![](/diagramas/conexiones_01.png)
   
   ## Dispositivo físico
-  ![](/diagramas/fisico_01.JPG)
-  ![](/diagramas/fisico_02.JPG)
+  ![](/diagramas/fisico_01.png)
+  ![](/diagramas/fisico_02.png)
   
 
 ## Diagrama de estados
 En el diagrama se puede observar el estado del dispositivo en un momento dado, y los posibles estados al cual puede pasar. Por estado se debe entender como las diferentes combinaciones de información que la maquina puede mantener.
 
-![](/diagramas/máquina_de_estado_01.jpg)
+![](/diagramas/máquina_de_estado_01.png)
 
 
 
@@ -72,12 +72,12 @@ Al iniciar la aplicación SmartTecho, nos mostrara una pantalla en la cual tenem
 
 
 ## Modo automatico
-        En este modo de operación, el sistema se basa en sensores de lluvia y luz para determinar la apertura o cierre automático del techo. Cuando el sensor de lluvia detecta un aumento en los valores de tolerancia predefinidos, el techo se cerrará. Del mismo modo, cuando los valores de luz indican una iluminación baja, lo cual denota la noche, el techo también se cerrará, y se activará una luz en el estado cerrado.
+En este modo de operación, el sistema se basa en sensores de lluvia y luz para determinar la apertura o cierre automático del techo. Cuando el sensor de lluvia detecta un aumento en los valores de tolerancia predefinidos, el techo se cerrará. Del mismo modo, cuando los valores de luz indican una iluminación baja, lo cual denota la noche, el techo también se cerrará, y se activará una luz en el estado cerrado.
 
 
 ## Modo manualmente
-        En el modo manual, la apertura y cierre del techo son completamente controlados por el usuario, quien decide si mantenerlo cerrado o abierto, independientemente de los valores de los sensores de lluvia o luz. En este estado, se encenderá un LED rojo, indicando que el sistema se encuentra en modo manual.
-        Es posible realizar la transición del modo manual al modo automático cuando el usuario lo desee, ya sea mediante el pulsador manual o a través de la aplicación móvil.
+En el modo manual, la apertura y cierre del techo son completamente controlados por el usuario, quien decide si mantenerlo cerrado o abierto, independientemente de los valores de los sensores de lluvia o luz. En este estado, se encenderá un LED rojo, indicando que el sistema se encuentra en modo manual.
+Es posible realizar la transición del modo manual al modo automático cuando el usuario lo desee, ya sea mediante el pulsador manual o a través de la aplicación móvil.
 
 
 
