@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SmartTecho2</string>
+    <string name="lbl_soluciones">"Soluciones inteligentes"</string>
+    <string name="btn_continuar">"Continuar"</string>
+    <string name="btn_Volver">"Volver"</string>
+    <string name="btn_abrirtecho">ABRIR TECHO</string>
+    <string name="btn_cerrartecho">CERRAR TECHO</string>
+    <string name="txt_area_sensorluz">VALORES DEL SENSOR DE LUZ</string>
+    <string name="txt_area_vacio">                       </string>
+    <string name="iconodescripcion">SmartTecho</string>
+
+
+</resources>
