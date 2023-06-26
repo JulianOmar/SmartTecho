@@ -54,8 +54,9 @@ En el diagrama se puede observar el estado del dispositivo en un momento dado, y
 
 
 # Descripción de la Aplicación Android:
-Esta segunda parte del proyecto consiste en una aplicación móvil que nos sirve de ayuda y de complemento para ejecutar, consultar y poner en practica todas funcionalidades. 
-En principio, al iniciar la aplicación veremos una pantalla que contiene tanto el logo como el nombre de nuestra aplicación. ....
+Esta parte del proyecto consiste en una aplicación móvil que nos sirve de ayuda y de complemento para ejecutar, consultar y poner en practica todas funcionalidades. 
+Inicialmente, al ejecutar la aplicación, se presentará una interfaz que muestra el logotipo y el nombre de la aplicación. En la pantalla principal, se proporcionarán todas las funcionalidades y recursos necesarios para operar el techo automatizado mediante la aplicación móvil. Los usuarios tendrán la capacidad de controlar el techo corredizo de forma manual, así como visualizar el estado de operación y acceder a una sección informativa que muestra los valores porcentuales de la intensidad luminosa registrada por el sensor de luz.
+
 ![](/diagramas/app_01.jpg)
 
 
@@ -67,17 +68,21 @@ En principio, al iniciar la aplicación veremos una pantalla que contiene tanto 
 
 
 # Manual de uso:
-Al iniciar la aplicación SmartTecho, nos mostrara una pantalla en la cual tenemos que seleccionar nuestro dispositivo bluetooth.... 
-(Se deberá contar con un dispositivo compatible con bluetooth 2.0 o superior)
+Al iniciar la aplicación SmartTecho, nos mostrara una pantalla en la cual tenemos que seleccionar nuestro dispositivo bluetooth (Se deberá contar con un dispositivo compatible con bluetooth 2.0 o superior)
+Una vez que se ha establecido la conexión, es posible visualizar el estado actual del sistema, así como el valor porcentual proporcionado por el sensor de luz. Desde la aplicación, se ofrece la capacidad de abrir y cerrar manualmente el techo corredizo a través de botones diseñados específicamente para este propósito. Además, se brinda la opción de restablecer el sistema para que vuelva a operar en modo automático.
 
+El sistema implementado en este trabajo de IoT opera mediante la utilización de dos modos de funcionamiento distintos:manual y automatico
 
 ## Modo automatico
         En este modo de operación, el sistema se basa en sensores de lluvia y luz para determinar la apertura o cierre automático del techo. Cuando el sensor de lluvia detecta un aumento en los valores de tolerancia predefinidos, el techo se cerrará. Del mismo modo, cuando los valores de luz indican una iluminación baja, lo cual denota la noche, el techo también se cerrará, y se activará una luz en el estado cerrado.
 
 
-## Modo manualmente
+## Modo manual
         En el modo manual, la apertura y cierre del techo son completamente controlados por el usuario, quien decide si mantenerlo cerrado o abierto, independientemente de los valores de los sensores de lluvia o luz. En este estado, se encenderá un LED rojo, indicando que el sistema se encuentra en modo manual.
         Es posible realizar la transición del modo manual al modo automático cuando el usuario lo desee, ya sea mediante el pulsador manual o a través de la aplicación móvil.
+
+Puede acceder al simulador de Tinkercad en el siguiente enlace: 
+[SMART_TECHO | Tinkercad ](https://www.tinkercad.com/things/joPthXBBa8I)
 
 
 
