@@ -41,8 +41,10 @@ Proyecto de la materia Sistemas Operativos Avanzados.
   ![](/diagramas/conexiones_01.png)
   
   ## Dispositivo físico
-  ![](/diagramas/fisico_01.png)
-  ![](/diagramas/fisico_02.png)
+  ![](/diagramas/fisico_01.jpg)
+  ![](/diagramas/fisico_02.jpg)
+  ### Sensores y actuadores
+  ![](/diagramas/fisico_03.jpg)
   
 
 ## Diagrama de estados

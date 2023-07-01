@@ -1,4 +1,4 @@
-package com.example.smarttecho2;
+package com.example.smarttecho;
 
 import org.junit.Test;
 

@@ -1,13 +1,22 @@
 <resources>
-    <string name="app_name">SmartTecho2</string>
-    <string name="lbl_soluciones">"Soluciones inteligentes"</string>
-    <string name="btn_continuar">"Continuar"</string>
-    <string name="btn_Volver">"Volver"</string>
-    <string name="btn_abrirtecho">ABRIR TECHO</string>
-    <string name="btn_cerrartecho">CERRAR TECHO</string>
-    <string name="txt_area_sensorluz">VALORES DEL SENSOR DE LUZ</string>
-    <string name="txt_area_vacio">                       </string>
-    <string name="iconodescripcion">SmartTecho</string>
+    <string name="app_name">SmartTecho</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="text_bluetooth_off">Bluetooth Deshabilitado</string>
+    <string name="text_bluetooth_on">Bluetooth Habilitado</string>
+
+    <string name="text_enable">Activar</string>
+    <string name="text_disable">Desactivar</string>
+
+    <string name="text_view_paired">Dispositivos emparejados</string>
+    <string name="text_scan_devices">Buscar dispositivos</string>
+    <string name="text_stop_scan">Buscar dispositivos</string>
+
+    <string name="text_list_paired_devices">Dispositivos emparejados</string>
+    <string name="text_list_devices">Lista de dispositivos</string>
+
+    <string name="text_pair">Emparejar</string>
 
 
 </resources>
