@@ -99,19 +99,15 @@ void analizarDato(char c)
     break;
   case (auto_remoto):
     modo_actual = MODO_AUTOMATICO;
-    // Serial.println("hola auto");
     break;
   case (manual_remoto):
-    modo_actual = MODO_MANUAL;
-    // Serial.println("hola manual");
+    modo_actual = MODO_MANUAL;    
     break;
   case (sensor_luz_remoto):
-    // Serial.println("dame señal");
     BTserial.println("1" + String(lectura_per) + " %"); // envia valores del SENSOR_LUZ a la APP
     break;
   case (sensor_lluvia_remoto):
     BTserial.println("1" + String(lectura_per_lluvia) + " %");
-    //  BTserial.println ( lectura_per_lluvia );
     break;
   }
 }
@@ -156,8 +152,7 @@ int girar_motor(int pin_motor, int pin_motor_B, int finCarrera)
   {
     analogWrite(pin_motor, velocidad_motor_min);
     fin_carrera = true;
-    // activar_timeout = true;  verificar si sigue haceindo falta
-  }
+    // activar_timeout = true;  
   return 1;
 }
 
