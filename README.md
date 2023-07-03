@@ -59,8 +59,8 @@ En el diagrama se puede observar el estado del dispositivo en un momento dado, y
 Esta parte del proyecto consiste en una aplicación móvil que nos sirve de ayuda y de complemento para ejecutar, consultar y poner en practica todas funcionalidades. 
 Inicialmente, al ejecutar la aplicación, se presentará una interfaz que muestra el logotipo y el nombre de la aplicación. En la pantalla principal, se proporcionarán todas las funcionalidades y recursos necesarios para operar el techo automatizado mediante la aplicación móvil. Los usuarios tendrán la capacidad de controlar el techo corredizo de forma manual, así como visualizar el estado de operación y acceder a una sección informativa que muestra los valores porcentuales de la intensidad luminosa registrada por el sensor de luz.
 
-||||
-|---|---|---|
+|||
+|---|---|
 | ![](/diagramas/app_01.jpg) | ![](/diagramas/app_02.jpg) |
 |![](/diagramas/app_03.jpg)| |
 |![](/diagramas/app_04.jpg)|![](/diagramas/app_05.jpg)|
