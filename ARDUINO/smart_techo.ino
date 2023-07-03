@@ -107,10 +107,11 @@ void analizarDato(char c)
     break;
   case (sensor_luz_remoto):
     // Serial.println("dame señal");
-    BTserial.println(lectura_per); // envia valores del SENSOR_LUZ a la APP
+    BTserial.println("1" + String(lectura_per) + " %"); // envia valores del SENSOR_LUZ a la APP
     break;
   case (sensor_lluvia_remoto):
-    BTserial.println(lectura_per_lluvia);
+    BTserial.println("1" + String(lectura_per_lluvia) + " %");
+    //  BTserial.println ( lectura_per_lluvia );
     break;
   }
 }
@@ -253,21 +254,21 @@ void maquina_estado()
       Serial.println("INICIANDO......");
       estado_actual = ESTADO_CERRADO;
       Serial.println("ESTADO_CERRADO");
-      BTserial.println("ESTADO_CERRADO");
+      BTserial.println("0" + String("CERRADO"));
       break;
     case (ESTADO_ABRIENDO):
       switch (evento)
       {
       case (EVENTO_FIN_CARRERA):
         Serial.println("ESTADO_ABIERTO");
-        BTserial.println("ESTADO_ABIERTO");
+        BTserial.println("0" + String("ABIERTO"));
         estado_actual = ESTADO_ABIERTO;
         activar_timeout = true;
         fin_carrera = false;
         break;
       case (EVENTO_TIMEOUT):
         Serial.println("ESTADO_ERROR");
-        BTserial.println("ESTADO_ERROR");
+        BTserial.println("0" + String("ESTADO_ERROR"));
         estado_actual = ESTADO_ERROR;
         evento = EVENTO_CONTINUE;
         break;
@@ -280,13 +281,14 @@ void maquina_estado()
       {
       case (EVENTO_FIN_CARRERA):
         Serial.println("ESTADO_CERRADO");
-        BTserial.println("ESTADO_CERRADO");
+        BTserial.println("0" + String("CERRADO"));
         estado_actual = ESTADO_CERRADO;
         activar_timeout = true;
         fin_carrera = false;
         break;
       case (EVENTO_TIMEOUT):
         Serial.println("ESTADO_ERROR");
+        BTserial.println("0" + String("ESTADO_ERROR"));
         estado_actual = ESTADO_ERROR;
         evento = EVENTO_CONTINUE;
         break;
@@ -303,16 +305,19 @@ void maquina_estado()
       case (EVENTO_PULSADOR):
         Serial.println("MODO MANUAL ACTIVADO");
         Serial.println("ESTADO_CERRANDO >>>>");
+        BTserial.println("0" + String("CERRANDO >>>>"));
         estado_actual = ESTADO_CERRANDO;
         modo_actual = MODO_MANUAL;
         pulsador_remoto = false;
         break;
       case (EVENTO_LLUVIA_HIGH): //
         Serial.println("ESTADO_CERRANDO POR LLUVIA>>>>");
+        BTserial.println("0" + String("CERRANDO POR LLUVIA>>>>"));
         estado_actual = ESTADO_CERRANDO;
         break;
       case (EVENTO_LUZ_LOW):
         Serial.println("ESTADO_CERRANDO >>>>");
+        BTserial.println("0" + String("CERRANDO >>>>"));
         estado_actual = ESTADO_CERRANDO;
         break;
       case (EVENTO_LUZ_HIGH): // continue....
@@ -328,6 +333,7 @@ void maquina_estado()
       case (EVENTO_PULSADOR):
         Serial.println("MODO MANUAL ACTIVADO");
         Serial.println("ESTADO_ABRIENDO >>>>");
+        BTserial.println("0" + String("ABRIENDO >>>>"));
         estado_actual = ESTADO_ABRIENDO;
         modo_actual = MODO_MANUAL;
         pulsador_remoto = false;
@@ -338,6 +344,7 @@ void maquina_estado()
         break;
       case (EVENTO_LUZ_HIGH):
         Serial.println("ESTADO_ABRIENDO >>>>");
+        BTserial.println("0" + String("ABRIENDO >>>>"));
         estado_actual = ESTADO_ABRIENDO;
         break;
       case (EVENTO_LUZ_LOW): // continue...
@@ -354,6 +361,7 @@ void maquina_estado()
       case (EVENTO_PULSADOR):
         estado_actual = ESTADO_CERRANDO;
         Serial.println("ESTADO_CERRANDO >>>>");
+        BTserial.println("0" + String("CERRANDO >>>>"));
         TIMEOUT = false;
         activar_timeout = true;
         fin_carrera = false;
@@ -377,7 +385,7 @@ void maquina_estado()
       {
       case (EVENTO_FIN_CARRERA):
         Serial.println("ESTADO_ABIERTO");
-        BTserial.println("ESTADO_ABIERTO");
+        BTserial.println("0" + String("ABIERTO"));
         estado_actual = ESTADO_ABIERTO;
         activar_timeout = true;
         fin_carrera = false;
@@ -389,6 +397,7 @@ void maquina_estado()
         break;
       case (EVENTO_TIMEOUT):
         Serial.println("ESTADO_ERROR");
+        BTserial.println("0" + String("ESTADO_ERROR"));
         estado_actual = ESTADO_ERROR;
         evento = EVENTO_CONTINUE;
         break;
@@ -404,7 +413,7 @@ void maquina_estado()
       {
       case (EVENTO_FIN_CARRERA):
         Serial.println("ESTADO_CERRADO");
-        BTserial.println("ESTADO_CERRADO");
+        BTserial.println("0" + String("CERRADO"));
         estado_actual = ESTADO_CERRADO;
         activar_timeout = true;
         fin_carrera = false;
@@ -416,6 +425,7 @@ void maquina_estado()
         break;
       case (EVENTO_TIMEOUT):
         Serial.println("ESTADO_ERROR");
+        BTserial.println("0" + String("ESTADO_ERROR"));
         estado_actual = ESTADO_ERROR;
         evento = EVENTO_CONTINUE;
         break;
@@ -430,6 +440,7 @@ void maquina_estado()
       {
       case (EVENTO_PULSADOR):
         Serial.println("ESTADO_CERRANDO >>>>");
+        BTserial.println("0" + String("CERRANDO >>>>"));
         estado_actual = ESTADO_CERRANDO;
         pulsador_remoto = false;
         break;
@@ -444,6 +455,7 @@ void maquina_estado()
       case (EVENTO_PULSADOR):
         pulsador_remoto = false;
         Serial.println("ESTADO_ABRIENDO >>>>");
+        BTserial.println("0" + String("ABRIENDO >>>>"));
         estado_actual = ESTADO_ABRIENDO;
 
         break;
@@ -459,6 +471,7 @@ void maquina_estado()
         pulsador_remoto = false;
         estado_actual = ESTADO_CERRANDO;
         Serial.println("ESTADO_CERRANDO >>>>");
+        BTserial.println("0" + String("CERRANDO >>>>"));
         TIMEOUT = false;
         activar_timeout = true;
         fin_carrera = false;

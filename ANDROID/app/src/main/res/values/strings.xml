@@ -15,8 +15,20 @@
 
     <string name="text_list_paired_devices">Dispositivos emparejados</string>
     <string name="text_list_devices">Lista de dispositivos</string>
-
     <string name="text_pair">Emparejar</string>
+
+    <string name="Btnautomatico">Automatico</string>
+
+    <string name="BtnManual">Manual</string>
+    <string name="BtnLuz">Luz</string>
+    <string name="BtnPotenciometro">Potenciometro</string>
+    <string name="BtnLluvia">Lluvia</string>
+    <string name="BtnPulsador">Pulsador</string>
+    <string name="TxtEstado">Estado:</string>
+    <string name="TxtEstado_01">----</string>
+    <string name="TxtLluviaLuz">Valor lluvia/luz</string>
+    <string name="SmartTechoIcono">SmartTecho</string>
+
 
 
 </resources>

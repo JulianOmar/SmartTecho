@@ -14,12 +14,15 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+//import android.support.ActivityCompat;
+//import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +56,9 @@ public class MainActivity extends Activity
 			Manifest.permission.ACCESS_COARSE_LOCATION,
 			Manifest.permission.WRITE_EXTERNAL_STORAGE,
 			Manifest.permission.READ_PHONE_STATE,
-			Manifest.permission.READ_EXTERNAL_STORAGE};
+			Manifest.permission.READ_EXTERNAL_STORAGE,
+			Manifest.permission.BLUETOOTH_SCAN,
+			Manifest.permission.BLUETOOTH_CONNECT};
 
 
 	@Override
