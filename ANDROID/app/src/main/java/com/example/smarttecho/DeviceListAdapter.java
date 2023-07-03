@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Device list adapter.
  * 
- * @author Lorensius W. L. T <lorenz@londatiga.net>
+ * @author 
  *
  */
 public class DeviceListAdapter extends BaseAdapter{
