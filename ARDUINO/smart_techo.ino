@@ -2,62 +2,74 @@
 SoftwareSerial BTserial(2, 3); // RX | TX
 
 #define SERIAL 9600
-#define LED_BLANCO 12
-#define LED_ROJO_MANUAL 11
-#define SENSOR_LUZ A1
-#define SENSOR_LLUVIA A2
-#define PIN_MOTOR_A 5
-#define PIN_MOTOR_C 6
-#define PIN_PUL_MANUAL 8
-#define PIN_PUL_CERRADO 7
-#define PIN_PUL_ABIERTO 4
+
+//Pines de Sensores y actuadores
+#define LED_BLANCO         12
+#define LED_ROJO_MANUAL    11
+#define SENSOR_LUZ         A1
+#define SENSOR_LLUVIA      A2
+#define PIN_MOTOR_A        5
+#define PIN_MOTOR_C        6
+#define PIN_PUL_MANUAL     8
+#define PIN_PUL_CERRADO    7
+#define PIN_PUL_ABIERTO    4
 
 char c = ' ';
 
-#define pul_remoto '1'           // seañal para cambiar estado ABIERTO <->CERRADO
-#define auto_remoto '2'          // cambiar estado a AUTOMATICO
-#define manual_remoto '3'        // cambiar estado a MANUAL
-#define sensor_luz_remoto '4'    // solicitar valores del SENSOR_LUZ
-#define sensor_lluvia_remoto '5' // solicitar valores del SENSOR_lluvia
+//Señales de comando admitidos
+#define PUL_REMOTO           '1'          // seañal para cambiar estado ABIERTO <->CERRADO
+#define AUTO_REMOTO          '2'          // cambiar estado a AUTOMATICO
+#define MANUAL_REMOTO        '3'          // cambiar estado a MANUAL
+#define SENSOR_LUZ_REMOTO    '4'          // solicitar valores del SENSOR_LUZ
+#define SENSOR_LLUVIA_REMOTO '5'          // solicitar valores del SENSOR_lluvia
 
-#define TIEMPO_MAX_MILIS 250 // 0.25 segundo.
+//Tipo de mensajes enviados
+#define VALOR_SENSOR         "1"
+#define VALOR_ESTADO         "0" 
+
+
+#define TIEMPO_MAX_MILIS      250         // 0.25 segundo.
+#define UMBRAL_TIMEOUT        10000       // 10 seg
 unsigned long tiempo_actual = 0;
 unsigned long tiempo_anterior = 0;
 unsigned long tiempoIncial = 0;
 unsigned long tiempoActual = 0;
-#define UMBRAL_TIMEOUT 10000 // 10 seg
+
 bool activar_timeout = true;
 bool pulsador_remoto = false;
-#define vol_max 1023
-#define vol_min 0
-#define f_escala_max 100
-#define f_escala_min 0
-#define max_luz 40              // UMBRAL DEL SENSOR DE LUZ
-#define MAX_LLUVIA 85           // UMBRAL DEL sensor de lluvia
-#define velocidad_motor_min 0   // velocidad de movimiento de motor detenido
-#define velocidad_motor_max 255 // velocidad de movimiento de motor
+#define VOL_MAX             1023
+#define VOL_MIN             0
+#define F_ESCALA_MAX        100
+#define F_ESCALA_MIN        0
+#define MAX_LUZ             40           // UMBRAL DEL SENSOR DE LUZ
+#define MAX_LLUVIA          85           // UMBRAL DEL sensor de lluvia
+#define VEL_MOTOR_MIN       0            // velocidad de movimiento de motor detenido
+#define VEL_MOTOR_MAX       255          // velocidad de movimiento de motor
 
-#define MODO_AUTOMATICO 11
-#define MODO_MANUAL 22
+//Modos de funcionamiento del sistema
+#define MODO_AUTOMATICO     11
+#define MODO_MANUAL         22
 
-#define ESTADO_INICIAL -1
-#define ESTADO_ABRIENDO 0
-#define ESTADO_CERRANDO 1
-#define ESTADO_ABIERTO 2
-#define ESTADO_CERRADO 3
-#define ESTADO_ERROR 4
+//Estados del sitema
+#define ESTADO_INICIAL     -1
+#define ESTADO_ABRIENDO     0
+#define ESTADO_CERRANDO     1
+#define ESTADO_ABIERTO      2
+#define ESTADO_CERRADO      3
+#define ESTADO_ERROR        4
 
-#define EVENTO_PULSADOR 0
-#define EVENTO_FIN_CARRERA 1
-#define EVENTO_LLUVIA_HIGH 2
-#define EVENTO_LUZ_HIGH 3
-#define EVENTO_LUZ_LOW 4
-#define EVENTO_LLUVIA_LOW 5
-#define EVENTO_TIMEOUT 6
-#define EVENTO_CONTINUE 7
+//Eventos del sistema
+#define EVENTO_PULSADOR     0
+#define EVENTO_FIN_CARRERA  1
+#define EVENTO_LLUVIA_HIGH  2
+#define EVENTO_LUZ_HIGH     3
+#define EVENTO_LUZ_LOW      4
+#define EVENTO_LLUVIA_LOW   5
+#define EVENTO_TIMEOUT      6
+#define EVENTO_CONTINUE     7
 
-int modo_actual = MODO_AUTOMATICO;
-int estado_actual = ESTADO_INICIAL; // estado de iniciacion del sistema
+int modo_actual = MODO_AUTOMATICO;    // modo de inicial del sistema
+int estado_actual = ESTADO_INICIAL;   // estado de iniciacion del sistema
 int evento = -1;
 bool fin_carrera = false;
 bool luz_dia = false;
@@ -67,8 +79,9 @@ int lluviaSensor = 0;
 int lectura_per = 0;
 int lectura_per_lluvia = 0;
 
+
 /*
- * leer monitor serial y sensor bluetooth HC05
+ * Leer monitor serial y sensor bluetooth HC05
  */
 void lectura_comand()
 {
@@ -90,27 +103,36 @@ void lectura_comand()
   }
 }
 
+/*
+ * Analiza el comando recivido por el mopnitor serial/ bluetooth
+ */
 void analizarDato(char c)
 {
   switch (c)
   {
-  case (pul_remoto):
+  case (PUL_REMOTO):
     pulsador_remoto = true;
     break;
-  case (auto_remoto):
+  case (AUTO_REMOTO):
     modo_actual = MODO_AUTOMATICO;
     break;
-  case (manual_remoto):
+  case (MANUAL_REMOTO):
     modo_actual = MODO_MANUAL;    
     break;
-  case (sensor_luz_remoto):
-    BTserial.println("1" + String(lectura_per) + " %"); // envia valores del SENSOR_LUZ a la APP
+  case (SENSOR_LUZ_REMOTO):
+    BTserial.println(VALOR_SENSOR + String(lectura_per) + " %"); // envia valores del SENSOR_LUZ a la APP
     break;
-  case (sensor_lluvia_remoto):
-    BTserial.println("1" + String(lectura_per_lluvia) + " %");
+  case (SENSOR_LLUVIA_REMOTO):
+    BTserial.println(VALOR_SENSOR + String(lectura_per_lluvia) + " %");
     break;
+  default:
+    Serial.println("Comando no admitido");
   }
 }
+
+/**
+* Comprueba Timeout de la duracion de giro del motor
+ */
 bool verificarTimeout()
 {
   if (activar_timeout == true)
@@ -133,26 +155,26 @@ bool verificarTimeout()
  * GIRA EL MOTOR, +TIME, SI EXCEDE EL TIEMPO DE APERTURA/CIERRE
  * LANZA ERROR
  */
-int girar_motor(int pin_motor, int pin_motor_B, int finCarrera)
+int girar_motor(int pin_motor_A, int pin_motor_B, int pin_finCarrera)
 {
   if (verificarTimeout() == true) // Timeout
   {
     TIMEOUT = true;
-    analogWrite(pin_motor, velocidad_motor_min); // parar giro del motor
+    analogWrite(pin_motor_A, VEL_MOTOR_MIN); // parar giro del motor
     return 0;
   }
 
-  if (digitalRead(finCarrera) != HIGH) // sigue girando el motor
+  if (digitalRead(pin_finCarrera) != HIGH) // sigue girando el motor
   {
-    analogWrite(pin_motor_B, velocidad_motor_min);
-    analogWrite(pin_motor, velocidad_motor_max);
+    analogWrite(pin_motor_B, VEL_MOTOR_MIN);
+    analogWrite(pin_motor_A, VEL_MOTOR_MAX);
     return 0;
   }
   else
   {
-    analogWrite(pin_motor, velocidad_motor_min);
+    analogWrite(pin_motor_A, VEL_MOTOR_MIN);
     fin_carrera = true;
-    // activar_timeout = true;  
+  }
   return 1;
 }
 
@@ -162,13 +184,12 @@ int girar_motor(int pin_motor, int pin_motor_B, int finCarrera)
 void leer_sensores()
 {
   int lectura_luz = analogRead(SENSOR_LUZ);
-  lectura_per = map(lectura_luz, vol_min, vol_max, f_escala_min, f_escala_max);
-  lectura_per > max_luz ? luz_dia = true : luz_dia = false;
-  // Serial.println(lectura_per);
+  lectura_per = map(lectura_luz, VOL_MIN, VOL_MAX, F_ESCALA_MIN, F_ESCALA_MAX);
+  lectura_per > MAX_LUZ ? luz_dia = true : luz_dia = false;
+  
   lluviaSensor = analogRead(SENSOR_LLUVIA);
-  lectura_per_lluvia = map(lluviaSensor, vol_min, vol_max, f_escala_min, f_escala_max);
+  lectura_per_lluvia = map(lluviaSensor, VOL_MIN, VOL_MAX, F_ESCALA_MIN, F_ESCALA_MAX);
   lectura_per_lluvia > MAX_LLUVIA ? lluvia = true : lluvia = false;
-  // Serial.println(lectura_per_lluvia);
 }
 
 /**
@@ -197,9 +218,9 @@ bool verificarSensorPulsador()
  */
 int generar_evento()
 {
-  leer_sensores();  // relevamiento de sensores
-  actualizar_led(); // actualizar leds
-  lectura_comand(); // relevamiento de monitor serial y bluetooth
+  leer_sensores();                // relevamiento de sensores
+  actualizar_led();               // actualizar leds
+  lectura_comand();               // relevamiento de monitor serial y bluetooth
   switch (modo_actual)
   {
   case (MODO_AUTOMATICO):
@@ -207,7 +228,7 @@ int generar_evento()
       return EVENTO_PULSADOR;
     if (TIMEOUT)
       return EVENTO_TIMEOUT;
-    if (fin_carrera) //??
+    if (fin_carrera) 
       return EVENTO_FIN_CARRERA;
     if (verificarSensorPulsador() || pulsador_remoto)
       return EVENTO_PULSADOR;
@@ -231,7 +252,7 @@ int generar_evento()
 }
 
 /*
- *Maquina de transicion de estados
+ * Maquina de transicion de estados
  */
 void maquina_estado()
 {
@@ -249,21 +270,21 @@ void maquina_estado()
       Serial.println("INICIANDO......");
       estado_actual = ESTADO_CERRADO;
       Serial.println("ESTADO_CERRADO");
-      BTserial.println("0" + String("CERRADO"));
+      BTserial.println(VALOR_ESTADO + String("CERRADO"));
       break;
     case (ESTADO_ABRIENDO):
       switch (evento)
       {
       case (EVENTO_FIN_CARRERA):
         Serial.println("ESTADO_ABIERTO");
-        BTserial.println("0" + String("ABIERTO"));
+        BTserial.println(VALOR_ESTADO + String("ABIERTO"));
         estado_actual = ESTADO_ABIERTO;
         activar_timeout = true;
         fin_carrera = false;
         break;
       case (EVENTO_TIMEOUT):
         Serial.println("ESTADO_ERROR");
-        BTserial.println("0" + String("ESTADO_ERROR"));
+        BTserial.println(VALOR_ESTADO + String("ESTADO_ERROR"));
         estado_actual = ESTADO_ERROR;
         evento = EVENTO_CONTINUE;
         break;
@@ -276,14 +297,14 @@ void maquina_estado()
       {
       case (EVENTO_FIN_CARRERA):
         Serial.println("ESTADO_CERRADO");
-        BTserial.println("0" + String("CERRADO"));
+        BTserial.println(VALOR_ESTADO + String("CERRADO"));
         estado_actual = ESTADO_CERRADO;
         activar_timeout = true;
         fin_carrera = false;
         break;
       case (EVENTO_TIMEOUT):
         Serial.println("ESTADO_ERROR");
-        BTserial.println("0" + String("ESTADO_ERROR"));
+        BTserial.println(VALOR_ESTADO + String("ESTADO_ERROR"));
         estado_actual = ESTADO_ERROR;
         evento = EVENTO_CONTINUE;
         break;
@@ -300,19 +321,19 @@ void maquina_estado()
       case (EVENTO_PULSADOR):
         Serial.println("MODO MANUAL ACTIVADO");
         Serial.println("ESTADO_CERRANDO >>>>");
-        BTserial.println("0" + String("CERRANDO >>>>"));
+        BTserial.println(VALOR_ESTADO + String("CERRANDO >>>>"));
         estado_actual = ESTADO_CERRANDO;
         modo_actual = MODO_MANUAL;
         pulsador_remoto = false;
         break;
       case (EVENTO_LLUVIA_HIGH): //
         Serial.println("ESTADO_CERRANDO POR LLUVIA>>>>");
-        BTserial.println("0" + String("CERRANDO POR LLUVIA>>>>"));
+        BTserial.println(VALOR_ESTADO + String("CERRANDO POR LLUVIA>>>>"));
         estado_actual = ESTADO_CERRANDO;
         break;
       case (EVENTO_LUZ_LOW):
         Serial.println("ESTADO_CERRANDO >>>>");
-        BTserial.println("0" + String("CERRANDO >>>>"));
+        BTserial.println(VALOR_ESTADO + String("CERRANDO >>>>"));
         estado_actual = ESTADO_CERRANDO;
         break;
       case (EVENTO_LUZ_HIGH): // continue....
@@ -328,7 +349,7 @@ void maquina_estado()
       case (EVENTO_PULSADOR):
         Serial.println("MODO MANUAL ACTIVADO");
         Serial.println("ESTADO_ABRIENDO >>>>");
-        BTserial.println("0" + String("ABRIENDO >>>>"));
+        BTserial.println(VALOR_ESTADO + String("ABRIENDO >>>>"));
         estado_actual = ESTADO_ABRIENDO;
         modo_actual = MODO_MANUAL;
         pulsador_remoto = false;
@@ -339,7 +360,7 @@ void maquina_estado()
         break;
       case (EVENTO_LUZ_HIGH):
         Serial.println("ESTADO_ABRIENDO >>>>");
-        BTserial.println("0" + String("ABRIENDO >>>>"));
+        BTserial.println(VALOR_ESTADO + String("ABRIENDO >>>>"));
         estado_actual = ESTADO_ABRIENDO;
         break;
       case (EVENTO_LUZ_LOW): // continue...
@@ -356,7 +377,7 @@ void maquina_estado()
       case (EVENTO_PULSADOR):
         estado_actual = ESTADO_CERRANDO;
         Serial.println("ESTADO_CERRANDO >>>>");
-        BTserial.println("0" + String("CERRANDO >>>>"));
+        BTserial.println(VALOR_ESTADO + String("CERRANDO >>>>"));
         TIMEOUT = false;
         activar_timeout = true;
         fin_carrera = false;
@@ -380,7 +401,7 @@ void maquina_estado()
       {
       case (EVENTO_FIN_CARRERA):
         Serial.println("ESTADO_ABIERTO");
-        BTserial.println("0" + String("ABIERTO"));
+        BTserial.println(VALOR_ESTADO + String("ABIERTO"));
         estado_actual = ESTADO_ABIERTO;
         activar_timeout = true;
         fin_carrera = false;
@@ -392,7 +413,7 @@ void maquina_estado()
         break;
       case (EVENTO_TIMEOUT):
         Serial.println("ESTADO_ERROR");
-        BTserial.println("0" + String("ESTADO_ERROR"));
+        BTserial.println(VALOR_ESTADO + String("ESTADO_ERROR"));
         estado_actual = ESTADO_ERROR;
         evento = EVENTO_CONTINUE;
         break;
@@ -408,7 +429,7 @@ void maquina_estado()
       {
       case (EVENTO_FIN_CARRERA):
         Serial.println("ESTADO_CERRADO");
-        BTserial.println("0" + String("CERRADO"));
+        BTserial.println(VALOR_ESTADO + String("CERRADO"));
         estado_actual = ESTADO_CERRADO;
         activar_timeout = true;
         fin_carrera = false;
@@ -420,7 +441,7 @@ void maquina_estado()
         break;
       case (EVENTO_TIMEOUT):
         Serial.println("ESTADO_ERROR");
-        BTserial.println("0" + String("ESTADO_ERROR"));
+        BTserial.println(VALOR_ESTADO + String("ESTADO_ERROR"));
         estado_actual = ESTADO_ERROR;
         evento = EVENTO_CONTINUE;
         break;
@@ -435,7 +456,7 @@ void maquina_estado()
       {
       case (EVENTO_PULSADOR):
         Serial.println("ESTADO_CERRANDO >>>>");
-        BTserial.println("0" + String("CERRANDO >>>>"));
+        BTserial.println(VALOR_ESTADO + String("CERRANDO >>>>"));
         estado_actual = ESTADO_CERRANDO;
         pulsador_remoto = false;
         break;
@@ -450,9 +471,8 @@ void maquina_estado()
       case (EVENTO_PULSADOR):
         pulsador_remoto = false;
         Serial.println("ESTADO_ABRIENDO >>>>");
-        BTserial.println("0" + String("ABRIENDO >>>>"));
+        BTserial.println(VALOR_ESTADO + String("ABRIENDO >>>>"));
         estado_actual = ESTADO_ABRIENDO;
-
         break;
       case (EVENTO_CONTINUE):
 
@@ -466,7 +486,7 @@ void maquina_estado()
         pulsador_remoto = false;
         estado_actual = ESTADO_CERRANDO;
         Serial.println("ESTADO_CERRANDO >>>>");
-        BTserial.println("0" + String("CERRANDO >>>>"));
+        BTserial.println(VALOR_ESTADO + String("CERRANDO >>>>"));
         TIMEOUT = false;
         activar_timeout = true;
         fin_carrera = false;
