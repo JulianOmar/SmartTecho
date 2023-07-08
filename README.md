@@ -87,10 +87,24 @@ Puede acceder al simulador de Tinkercad en el siguiente enlace:
 [SMART_TECHO | Tinkercad ](https://www.tinkercad.com/things/joPthXBBa8I)
 
 
+## Desafios
 
+Durante el desarrollo de nuestro proyecto embebido, enfrentamos desafíos significativos que afectaron su funcionamiento. La transición entre los modos automático y manual resultó problemática al intentar implementar estados compartidos. Para superar este problema, abordamos las partes automática y manual como módulos separados pero interconectados, como se muestra en el diagrama de estado disponible en este repositorio.
+
+Además, la alimentación eléctrica del circuito presentó un desafío importante. La fuente de 5V inicial no era suficiente para alimentar todos los componentes. Con la ayuda del profesor Esteban Carnuccio, identificamos que el consumo de energía del controlador del puente H L293D era la causa. En colaboración, implementamos una solución utilizando una fuente de alimentación adicional de 5V exclusivamente para el controlador, mientras que el resto del circuito se alimentaba con otra fuente de 5V separada.
+
+Estas soluciones permitieron superar los desafíos encontrados y mejorar el rendimiento y la funcionalidad general del proyecto embebido.
 
 # Conclusiones
 
+En conclusión, durante el desarrollo de nuestro proyecto embebido, hemos adquirido una valiosa experiencia que nos será útil para nuestro proyecto final de carrera. Ahora comprendemos cómo desarrollar y codificar sistemas embebidos utilizando herramientas como Tinkercad. También hemos adquirido conocimientos en el desarrollo de aplicaciones para Android utilizando Java y Android Studio. Estas habilidades y conocimientos adquiridos serán de gran utilidad en nuestras futuras carreras profesionales.
 
 
+## Referencias
 
+1.  E. A. Carnuccio, W. Valiente, and M. Volker, “Creación de entorno integrado para Sistemas Embebidos,” ReDDI: Revista Digital del Departamento de Ingeniería, vol. 6, no. 1, pp. 1–8, 2021, doi: https://doi.org/10.54789/reddi.6.1.2.
+2. Tutoriales Arduino V5.pdf, “Tutoriales Arduino V5.pdf,” Google Docs, 2019. https://drive.google.com/file/d/1d8EEDzAmauhnJJ7IHh8odY-qLOX13oRu/view (accessed May 02, 2023).
+3. L. Llamas, “Detector de lluvia con Arduino y sensor FC-37 o YL-83,” Luis Llamas, Feb. 13, 2016. https://www.luisllamas.es/arduino-lluvia/ (accessed May 02, 2023).
+4. pamela, “¿Qué es el Puente H L283D? El Driver puente H para motores L293D es un circuito que tiene en su Leer más,” Blog Arduino, LabVIEW y Electrónica, Jan. 22, 2021. https://electronicamade.com/puente-h-l293d/ (accessed May 02, 2023)
+5. “Ejemplos Android/Arduino-AndroidBluethoot/Android-Code · master · so-unlam / Material-SOA · GitLab,” GitLab, 2023. https://gitlab.com/so-unlam/Material-SOA/-/tree/master/Ejemplos%20Android/Arduino-AndroidBluethoot/Android-Code  (accessed Jul. 04, 2023).
+6. Jason, “Android Tutorial: Implement A Shake Listener – Jason McReynolds,” Jasonmcreynolds.com, 2015. http://jasonmcreynolds.com/?p=388 (accessed Jul. 04, 2023).

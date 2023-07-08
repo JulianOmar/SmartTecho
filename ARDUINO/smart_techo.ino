@@ -30,10 +30,10 @@ char c = ' ';
 
 #define TIEMPO_MAX_MILIS      250         // 0.25 segundo.
 #define UMBRAL_TIMEOUT        10000       // 10 seg
-unsigned long tiempo_actual = 0;
+unsigned long tiempo_actual   = 0;
 unsigned long tiempo_anterior = 0;
-unsigned long tiempoIncial = 0;
-unsigned long tiempoActual = 0;
+unsigned long tiempoIncial    = 0;
+unsigned long tiempoActual    = 0;
 
 bool activar_timeout = true;
 bool pulsador_remoto = false;

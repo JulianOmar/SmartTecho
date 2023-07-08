@@ -51,7 +51,7 @@
     </activity>
 
     <!--- Defino la activity que se comunica, transfierendo datos de los sensores, con Arduino -->
-    <activity android:name=".activity_comunicacion"></activity>
+    <activity android:name=".SmartTechoActivity"></activity>
 
     </application>
 

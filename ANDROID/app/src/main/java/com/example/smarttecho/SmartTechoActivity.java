@@ -11,7 +11,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,7 +27,8 @@ import java.util.UUID;
  **********************************************************************************************************/
 
 //******************************************** Hilo principal del Activity**************************************
-public class activity_comunicacion extends Activity {
+public class SmartTechoActivity extends Activity
+{
 
     Button btnPulsador, btnLluvia, btnLuz;
     Button btnAuto;
@@ -55,10 +55,23 @@ public class activity_comunicacion extends Activity {
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
+    //Tipos de mensajes recividos desde el Arduino
+    public static final String VALOR_ESTADO = "0";
+    public static final String VALOR_SENSOR = "1";
+
+    //Tipos de mensajes permitidos para enviar Arduino a traves del Bluethoot
+    public static final String PUL_REMOTO ="1";
+    public static final String AUTO_REMOTO="2";
+    public static final String MANUAL_REMOTO="3";
+    public static final String SENSOR_LUZ_REMOTO="4";
+    public static final String SENSOR_LLUVIA_REMOTO="5";
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comunicacion);
+        setContentView(R.layout.smart_techo_main);
 
         //Se definen los componentes del layout
         btnPulsador = (Button) findViewById(R.id.btnPulsador);
@@ -90,18 +103,13 @@ public class activity_comunicacion extends Activity {
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
-
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() 
+        {
             @Override
-            public void onShake(int count) {
-                /*
-                 * The following method, "handleShakeEvent(count):" is a stub //
-                 * method you would use to setup whatever you want done once the
-                 * device has been shook.
-                 */
-                mConnectedThread.write("1");
+            public void onShake(int count) 
+            {
+                mConnectedThread.write(PUL_REMOTO);
                 showToast("Shake Shake");
-
             }
         });
 
@@ -110,7 +118,8 @@ public class activity_comunicacion extends Activity {
     @Override
     //Cada vez que se detecta el evento OnResume se establece la comunicacion con el HC05, creando un
     //socketBluethoot
-    public void onResume() {
+    public void onResume() 
+    {
         super.onResume();
 
         //Obtengo el parametro, aplicando un Bundle, que me indica la Mac Adress del HC05
@@ -124,16 +133,19 @@ public class activity_comunicacion extends Activity {
         //se realiza la conexion del Bluethoot crea y se conectandose a atraves de un socket
         try {
             btSocket = createBluetoothSocket(device);
-        } catch (IOException e) {
+        } catch (IOException e) 
+        {
             showToast("La creacción del Socket fallo");
         }
         // Establish the Bluetooth socket connection.
         try {
             btSocket.connect();
-        } catch (IOException e) {
+        } catch (IOException e) 
+        {
             try {
                 btSocket.close();
-            } catch (IOException e2) {
+            } catch (IOException e2) 
+            {
                 //insert code to deal with this
             }
         }
@@ -155,46 +167,53 @@ public class activity_comunicacion extends Activity {
 
     @Override
     //Cuando se ejecuta el evento onPause se cierra el socket Bluethoot, para no recibiendo datos
-    public void onPause() {
+    public void onPause() 
+    {
         // Add the following line to unregister the Sensor Manager onPause
         mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
         try {
             //Don't leave Bluetooth sockets open when leaving activity
             btSocket.close();
-        } catch (IOException e2) {
+        } catch (IOException e2) 
+        {
             //insert code to deal with this
         }
     }
 
     //Metodo que crea el socket bluethoot
-    private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
-
+    private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException 
+    {
         return device.createRfcommSocketToServiceRecord(BTMODULEUUID);
     }
 
     //Handler que sirve que permite mostrar datos en el Layout al hilo secundario
     @SuppressLint("HandlerLeak")
-    private Handler Handler_Msg_Hilo_Principal() {
-        return new Handler() {
-            public void handleMessage(android.os.Message msg) {
+    private Handler Handler_Msg_Hilo_Principal() 
+    {
+        return new Handler() 
+        {
+            public void handleMessage(android.os.Message msg) 
+            {
                 //si se recibio un msj del hilo secundario
-                if (msg.what == handlerState) {
-                    //voy concatenando el msj
+                if (msg.what == handlerState) 
+                {
                     String readMessage = (String) msg.obj;
                     recDataString.append(readMessage);
                     int endOfLineIndex = recDataString.indexOf("\r\n");
 
                     //cuando recibo toda una linea la muestro en el layout
-                    if (endOfLineIndex > 0) {
+                    if (endOfLineIndex > 0) 
+                    {
                         String dataInPrint = recDataString.substring(0, 1);
-
-                        if (dataInPrint.equals("0")) {
+                        if (dataInPrint.equals(VALOR_ESTADO))
+                        {
                             dataInPrint = recDataString.substring(1, endOfLineIndex);
                             txtPotenciometro.setText(dataInPrint);
                             recDataString.delete(0, recDataString.length());
                         }
-                        if (dataInPrint.equals("1")) {
+                        if (dataInPrint.equals(VALOR_SENSOR))
+                        {
                             dataInPrint = recDataString.substring(1, endOfLineIndex);
                             txtLluviaLuz.setText(dataInPrint);
                             recDataString.delete(0, recDataString.length());
@@ -203,71 +222,85 @@ public class activity_comunicacion extends Activity {
                 }
             }
         };
-
     }
 
     //Listener del boton encender que envia  msj para enceder Led a Arduino atraves del Bluethoot
-    private View.OnClickListener btnPulsadorListener = new View.OnClickListener() {
+    private View.OnClickListener btnPulsadorListener = new View.OnClickListener() 
+    {
         @Override
-        public void onClick(View v) {
-            mConnectedThread.write("1");    // Send "1" via Bluetooth
+        public void onClick(View v) 
+        {
+            mConnectedThread.write(PUL_REMOTO);    // Send "1" via Bluetooth
             showToast("Pulsadopr remoto");
         }
     };
 
-    //Listener del boton encender que envia  msj para Apagar Led a Arduino atraves del Bluethoot
-    private View.OnClickListener btnAutoListener = new View.OnClickListener() {
+    //Listener del boton encender que envia  msj al Arduino a traves del Bluethoot
+    private View.OnClickListener btnAutoListener = new View.OnClickListener() 
+    {
         @Override
-        public void onClick(View v) {
-            mConnectedThread.write("2");    // Send "0" via Bluetooth
+        public void onClick(View v) 
+        {
+            mConnectedThread.write(AUTO_REMOTO);    // Send "2" via Bluetooth
             showToast("Cambiar a MODO AUTOMATICO");
         }
     };
-    private View.OnClickListener btnManualListener = new View.OnClickListener() {
+    private View.OnClickListener btnManualListener = new View.OnClickListener() 
+    {
         @Override
-        public void onClick(View v) {
-            mConnectedThread.write("3");    // Send "0" via Bluetooth
+        public void onClick(View v) 
+        {
+            mConnectedThread.write(MANUAL_REMOTO);    // Send "3" via Bluetooth
             showToast("Cambiar a MODO MANUAL");
         }
     };
 
-    private View.OnClickListener btnLluviaListener = new View.OnClickListener() {
+    private View.OnClickListener btnLluviaListener = new View.OnClickListener() 
+    {
         @Override
-        public void onClick(View v) {
-            mConnectedThread.write("5");    // Send "0" via Bluetooth
+        public void onClick(View v) 
+        {
+            mConnectedThread.write(SENSOR_LLUVIA_REMOTO);    // Send "5" via Bluetooth
             showToast("Sensor lluvia");
         }
     };
 
-    private View.OnClickListener btnLuzListener = new View.OnClickListener() {
+    private View.OnClickListener btnLuzListener = new View.OnClickListener() 
+    {
         @Override
-        public void onClick(View v) {
-            mConnectedThread.write("4");    // Send "0" via Bluetooth
+        public void onClick(View v) 
+        {
+            mConnectedThread.write(SENSOR_LUZ_REMOTO);    // Send "4" via Bluetooth
             showToast("Sensor luz");
         }
     };
 
-    private void showToast(String message) {
+    private void showToast(String message) 
+    {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     //******************************************** Hilo secundario del Activity**************************************
     //*************************************** recibe los datos enviados por el HC05**********************************
 
-    private class ConnectedThread extends Thread {
+    private class ConnectedThread extends Thread 
+    {
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
 
         //Constructor de la clase del hilo secundario
-        public ConnectedThread(BluetoothSocket socket) {
+        public ConnectedThread(BluetoothSocket socket) 
+        {
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
 
-            try {
+            try 
+            {
                 //Create I/O streams for connection
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) {
+            } catch (IOException e) 
+            {
             }
 
             mmInStream = tmpIn;
@@ -275,13 +308,16 @@ public class activity_comunicacion extends Activity {
         }
 
         //metodo run del hilo, que va a entrar en una espera activa para recibir los msjs del HC05
-        public void run() {
+        public void run() 
+        {
             byte[] buffer = new byte[256];
             int bytes;
 
             //el hilo secundario se queda esperando mensajes del HC05
-            while (true) {
-                try {
+            while (true) 
+            {
+                try 
+                {
                     //se leen los datos del Bluethoot
                     bytes = mmInStream.read(buffer);
                     String readMessage = new String(buffer, 0, bytes);
@@ -289,7 +325,8 @@ public class activity_comunicacion extends Activity {
                     //se muestran en el layout de la activity, utilizando el handler del hilo
                     // principal antes mencionado
                     bluetoothIn.obtainMessage(handlerState, bytes, -1, readMessage).sendToTarget();
-                } catch (IOException e) {
+                } catch (IOException e) 
+                {
                     break;
                 }
             }
@@ -297,17 +334,18 @@ public class activity_comunicacion extends Activity {
 
 
         //write method
-        public void write(String input) {
+        public void write(String input) 
+        {
             byte[] msgBuffer = input.getBytes();           //converts entered String into bytes
-            try {
+            try 
+            {
                 mmOutStream.write(msgBuffer);                //write bytes over BT connection via outstream
-            } catch (IOException e) {
+            } catch (IOException e) 
+            {
                 //if you cannot write, close the application
                 showToast("La conexion fallo");
                 finish();
-
             }
         }
     }
-
 }
